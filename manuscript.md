@@ -18,4 +18,4 @@ Let $\pi = \pi_1 | \pi_2 | \cdots | \pi_k \in \Pi^0_n$. We apply the following p
 Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1 | \pi_2 | \cdots | \pi_k \in SS^B_{n+1}$.
 
 1. Decrease every integer in absolute value by 1.
-2. For every element $a \ne 0$ in the first block, 
+2. For every element $a$ (or $\overline{a}$) $\ne 0$ in the first block, we move $a$ (or \overline{a})  
