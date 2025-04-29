@@ -25,4 +25,4 @@ Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1' | \pi_2' | \cd
 
 We note that
 
-**Lemme.** *For any partition $\pi \in SS^B_n$, we have* $(g \circ g^{-1})(\pi) = \pi$
+**Lemme.** *For any partition* $\pi \in SS^B_n$ *, we have* $(g \circ g^{-1})(\pi) = \pi$.
