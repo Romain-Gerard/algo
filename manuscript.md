@@ -15,10 +15,10 @@ Let $\pi = \pi_1 | \pi_2 | \cdots | \pi_k \in \Pi^0_n$. We apply the following p
 
 **Exemple 1.** Let $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10 \ \in \Pi^0_{10}$. Then, we add a zero block. Since $\overline{7}$ and $9$ are successions, we move theme to the zero block. Consequently, $10$ is no longer a succession. Then we increase every integer in absolute value by 1. Therefore, $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$.
 
-Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1 | \pi_2 | \cdots | \pi_k \in SS^B_{n+1}$.
+Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1' | \pi_2' | \cdots | \pi_k' \in SS^B_{n+1}$.
 
 1. Decrease every integer in absolute value by 1.
 2. For every element $a$ (or $\overline{a}$) $\ne 0$ in the first block, move $a$ (or $\overline{a}$) to the block containing $a-1$ (or $\overline{a-1}$).
 3. Remove the first block, which has only the element $0$ left.
 
-**Exemple 2.** Let $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$. Then, we decrease every integer in absolute value by 1. Now, we have $\pi_1 = 0\ \overline{7}\ 9$. Then, we move $\overline{7}$ to the third block and $9$ to the fourth block. Finally, we remove $\pi_1$. Therefore, $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$.
+**Exemple 2.** Let $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$. Then, we decrease every integer in absolute value by 1. Now, we have $\pi_1 = 0\ \overline{7}\ 9$. Then, we move $\overline{7}$ to the third block and $9$ to the fourth block. Finally, we remove $\pi_1$. Therefore, $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10 \ \in \Pi^0_{10}$.
