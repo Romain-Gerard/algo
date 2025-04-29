@@ -13,7 +13,19 @@ Let $\pi = \pi_1 | \pi_2 | \cdots | \pi_k \in \Pi^0_n$. We apply the following p
 2. For $a$ from $2$ to $n$, if $a$ (or $\overline{a}$) is a succession in block $\pi_i$, $i>1$, then move $a$ (or $\overline{a}$) to the zero block.
 3. Increase every integer in absolute value by $1$.
 
-**Example 1.** Let $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10 \ \in \Pi^0_{10}$. Then, we add a zero block. Since $\overline{7}$ and $9$ are successions, we move theme to the zero block. Consequently, $10$ is no longer a succession. Then we increase every integer in absolute value by 1. Therefore, $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$.
+**Example 1.** 
+
+Let $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10 \ \in \Pi^0_{10}$. 
+
+Then, we add a zero block. 
+
+$0\ 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10$
+
+Since $\overline{7}$ and $9$ are successions, we move theme to the zero block.
+
+$0\ \overline{7}\ 9 | \ 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10$
+
+Consequently, $10$ is no longer a succession. Then we increase every integer in absolute value by 1. Therefore, $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$.
 
 Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1' | \pi_2' | \cdots | \pi_k' \in SS^B_{n+1}$.
 
