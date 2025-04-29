@@ -21,7 +21,7 @@ Then, we add a zero block.
 
 $0\ 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10$
 
-Since $\overline{7}$ and $9$ are successions, we move theme to the zero block.
+Since $\overline{7}$ and $9$ are successions, we move them to the zero block.
 
 $0\ \overline{7}\ 9 | \ 1\ 4|2\ 6\ | 3\ 8\ 10$
 
