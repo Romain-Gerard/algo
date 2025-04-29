@@ -25,7 +25,7 @@ Since $\overline{7}$ and $9$ are successions, we move theme to the zero block.
 
 $0\ \overline{7}\ 9 | \ 1\ 4|2\ 6\ | 3\ 8\ 10$
 
-Consequently, $10$ is no longer a succession. Then we increase every integer in absolute value by 1. Therefore, $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$.
+Consequently, $10$ is no longer a succession. Then we increase every integer in absolute value by 1. Therefore, $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 11\ \in SS^B_{11}$.
 
 Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1' | \pi_2' | \cdots | \pi_k' \in SS^B_{n+1}$.
 
