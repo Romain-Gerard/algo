@@ -5,3 +5,4 @@ We give a bijection between type B strongly separated set partitions and type B 
 
 Let $SS^B_n$ denote the set of type B strongly separated partitions without zero block over <n>.
 
+We define the map $g : \PI^B_n$
