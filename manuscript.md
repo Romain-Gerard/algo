@@ -12,3 +12,5 @@ Let $\pi = \pi_1 | \pi_2 | \cdots | \pi_k$. We apply the following procedure to 
 1. Add a zero block which only contains $0$.
 2. For $a$ from $2$ to $n$, if $a$ (or $\overline{a}$) is a succession in block $\pi_i$, $i>1$, then move $a$ (or $\overline{a}$) to the zero block.
 3. Increase every integer in absolute value by $1$.
+
+### Exemple.
