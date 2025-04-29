@@ -3,4 +3,5 @@ A strongly separated partition is a partition in which all integers within the s
 
 We give a bijection between type B strongly separated set partitions and type B set partitions without zero block over <n>.
 
-Let $SS^B_n$ 
+Let $SS^B_n$ denote the set of type B strongly separated partitions without zero block over <n>.
+
