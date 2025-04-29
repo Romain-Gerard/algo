@@ -9,4 +9,6 @@ We define the map $g : \Pi^0_n \mapsto SS^B_{n+1}$ by $g(\pi) = \pi'$, where $\p
 
 Let $\pi = \pi_1 | \pi_2 | \cdots | \pi_k$. We apply the following procedure to $\pi$.
 
-1. For a from 1 
+1. Add a zero block which only contains $0$.
+2. For $a$ from $2$ to $n$:
+  - if $a$ (or $\overline{a}$) is a succession in block $\pi_i$, $i>1$, then move $a$ (or $\overline{a}$) to the zero block.
