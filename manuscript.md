@@ -22,3 +22,7 @@ Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1' | \pi_2' | \cd
 3. Remove the first block, which has only the element $0$ left.
 
 **Exemple 2.** Let $\pi' = 1\ \overline{8}\ 10 | 2\ 5 | 3\ 7 | 4\ 9\ 10\ \in SS^B_{11}$. Then, we decrease every integer in absolute value by 1. Now, we have $\pi_1 = 0\ \overline{7}\ 9$. Then, we move $\overline{7}$ to the third block and $9$ to the fourth block. Finally, we remove $\pi_1$. Therefore, $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10 \ \in \Pi^0_{10}$.
+
+We note that
+
+**Lemme.** *For any partition $\pi \in SS^B_n$, we have* $(g \circ g^{-1})(\pi) = \pi$
