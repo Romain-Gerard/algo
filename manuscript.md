@@ -19,4 +19,4 @@ Let us define $\pi = g^{-1}(\pi')$ as follows. Let $\pi' = \pi_1 | \pi_2 | \cdot
 
 1. Decrease every integer in absolute value by 1.
 2. For every element $a$ (or $\overline{a}$) $\ne 0$ in the first block, we move $a$ (or $\overline{a}$) to the block containing $a-1$ (or $\overline{a-1}$).
-3. We remove the first block, which has 
+3. We remove the first block, which has only the element $0$ left.
