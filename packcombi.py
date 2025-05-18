@@ -1,3 +1,7 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import Arc
+import numpy as np
+
 # ========== Factorielle et coefficient binomial ==========
 
 def facto_rec(x):
@@ -486,3 +490,315 @@ def calcule_dowling_no_zero_block(n):
         wn += (2**(n - k)) * calcule_stirling_dyn(n, k)
     return wn
 
+
+# ========== Type B separated set partitions =========
+
+def is_separated(part):
+    """
+    Vérifie si une partition de type B est séparée.
+    """
+    # Vérifier les blocs
+    for bloc in part:
+        # Vérifier si les éléments sont consécutifs
+        for i in range(len(bloc) - 1):
+            if abs(bloc[i]) + 1 == abs(bloc[i + 1]) and bloc[i] * bloc[i + 1] > 0:
+                return False
+    return True
+
+def is_strongly_separated(part):
+    """
+    Vérifie si une partition de type B est fortement séparée.
+    """
+    # Vérifier les blocs
+    for bloc in part:
+        # Vérifier si les éléments sont consécutifs
+        for i in range(len(bloc) - 1):
+            if abs(bloc[i]) + 1 == abs(bloc[i + 1]):
+                return False
+    return True
+
+
+# ========== Type B merging-free partitions =========
+
+def is_merge_free(part):
+    """
+    Vérifie si une partition de type B est merge-free.
+    """
+    for i in range(1, len(part)):
+        # Vérifier si le maximum du bloc i-1 est inférieur au minimum du bloc i en valeur absolue
+        if abs(part[i-1][-1]) < abs(part[i][0]):
+            return False
+    return True
+
+def is_normal_merge_free(part):
+    """
+    Vérifie si une partition de type B est merge-free.
+    """
+    for i in range(1, len(part)):
+        # Vérifier si le maximum du bloc i-1 est inférieur au minimum du bloc i.
+        if max(part[i-1]) < min(part[i]):
+            return False
+    return True
+
+
+# ========== Statistiques sur les partitions de type B ==========
+
+def compte_inversions(part):
+    """
+    Compte le nombre d'inversions dans une partition.
+    """
+    n = len(part)
+    # On calcule le minimum de chaque bloc en valeur absolue
+    lst_min = np.array([abs(np.array(bloc)).min() for bloc in part])
+    # On parcourt tous les blocs
+    inv_count = 0
+    for i in range(n-1):
+        # On parcourt tous les éléments du bloc i
+        for j in range(len(part[i])):
+            # On vérifie si l'élément est supérieur à au moins un des minimums des blocs suivants
+            test = part[i][j] > lst_min[i+1:]
+            inv_count += sum(test)
+    return inv_count
+
+
+# ========== Type B inversion free set partitions =========
+
+def is_inversion_free(part):
+    """
+    Vérifie si une partition de type B est inversion-free
+    """
+    n = len(part)
+    # On calcule le minimum de chaque bloc en valeur absolue
+    lst_min = np.array([abs(np.array(bloc)).min() for bloc in part])
+    # On parcourt tous les blocs
+    for i in range(n-1):
+        # On parcourt tous les éléments du bloc i
+        for j in range(len(part[i])):
+            # On vérifie si l'élément est supérieur à au moins un des minimums des blocs suivants
+            test = part[i][j] > lst_min[i+1:]
+            if True in test:
+                return False
+    return True
+
+
+# ========== Type B non-nesting partitions =========
+
+def plot_partition(partition, figsize=(10, 2), arc_height_scale=1.0):
+    """
+    Affiche une partition d'ensemble sous forme d'arcs, en ordonnant d'abord
+    toutes les valeurs positives croissantes, puis toutes les valeurs négatives
+    par ordre d'absolu croissant (ex. 1, 2, 3, -1, -2, -3).
+
+    Args:
+        partition (list of list of int]): blocs contenant des entiers positifs et négatifs.
+        figsize (tuple): taille de la figure matplotlib (largeur, hauteur).
+        arc_height_scale (float): facteur d'échelle pour la hauteur des arcs.
+    """
+    # 1) Calcule l'ordre des éléments : (groupe, clé)
+    #    groupe = 0 pour x >= 0, 1 pour x < 0 ; clé = abs(x)
+    elements = sorted(
+        {x for bloc in partition for x in bloc},
+        key=lambda x: (x < 0, abs(x))
+    )
+
+    # 2) Mappe chaque valeur à une position 1,2,…,n
+    pos = {x: i + 1 for i, x in enumerate(elements)}
+    n = len(elements)
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # 3) Trace les points et leurs labels
+    for x in elements:
+        ax.plot(pos[x], 0, 'o', color='k')
+        ax.text(pos[x], -0.1, str(x), ha='center', va='top')
+
+    # 4) Pour chaque bloc, dessine les arcs entre ses voisins dans ce nouvel ordre
+    for bloc in partition:
+        # tri du bloc selon la même clé
+        tri_bloc = sorted(bloc, key=lambda x: (x < 0, abs(x)))
+        for i in range(len(tri_bloc) - 1):
+            v1, v2 = tri_bloc[i], tri_bloc[i + 1]
+            x1, x2 = pos[v1], pos[v2]
+            mid = 0.5 * (x1 + x2)
+            width = x2 - x1
+            height = width * arc_height_scale
+            arc = Arc(
+                (mid, 0),
+                width=width, height=height,
+                angle=0, theta1=0, theta2=180,
+                edgecolor='black'
+            )
+            ax.add_patch(arc)
+
+    # 5) Ajuste les limites et masque les axes
+    ax.set_xlim(0, n + 1)
+    ax.set_ylim(-1, n * arc_height_scale / 2 + 1)
+    ax.axis('off')
+    plt.tight_layout()
+    plt.show()
+
+def is_non_nesting(part, n):
+    """
+    Vérifie si une partition de type B est non-nesting.
+    """
+    k = len(part)
+
+    # On remplace les éléments négatifs par leur valeur absolue + n
+    for i in range(len(part)):
+        for j in range(len(part[i])):
+            if part[i][j] < 0:
+                part[i][j] = abs(part[i][j]) + n
+
+    # On parcourt toutes les paires de blocs
+    for i in range(k-1):
+        for j in range(i + 1, k):
+            min_i = min(part[i])
+            max_i = max(part[i])
+            min_j = min(part[j])
+            max_j = max(part[j])
+            # Vérifier si il y a une inclusion ou disjonction
+            if (min_i < min_j and max_j < max_i) or \
+               (min_j < min_i and max_i < max_j):
+                #print(part, ": False")
+                return False
+    #print(part, ": True")
+
+    return True
+
+# ========== Stirling Permutations ==========
+
+def get_tree_from_stir_perm(perm):
+
+    visited = []
+    graph = []
+
+    for e in perm:
+        if len(visited) == 0:
+            graph.append((0, e))
+            visited.append(e)
+        else:
+            if e not in visited:
+                graph.append((visited[-1], e))
+                visited.append(e)
+            else:
+                visited = visited[:-1]
+
+    return graph
+
+def count_leaves_on_stir_perm(perm):
+    count = 0
+    for i in range(len(perm) - 1):
+        if perm[i] == perm[i+1]:
+            count += 1
+    return count
+
+def generate_stirling_permutations_rec(n):
+    """
+    Version récursive.
+    """
+    # Cas de base
+    if n == 1:
+        return [[1, 1]]
+    
+    all_perm = []
+    for perm in generate_stirling_permutations_rec(n - 1):
+        # On insère nn à chaque position possible
+        for i in range(len(perm) + 1):
+            new_perm = perm[:i] + 2*[n] + perm[i:]
+            all_perm.append(new_perm)
+
+    return all_perm
+
+
+# ========== Flattened Stirling Permutations ==========
+
+def is_run_sorted(perm):
+    """
+    Vérifie si une permutation est run-sorted.
+    """
+    min = perm[0]
+    for i in range(len(perm) - 1):
+        if perm[i] > perm[i+1]:
+            if perm[i+1] >= min:
+                min = perm[i+1]
+            else:
+                return False
+    return True
+
+
+def get_flattened_stirling_permutations(part_B):
+    """
+    On traduit une partition de type B en une permutation de Stirling.
+    """
+    if len(part_B) == 0:
+        return []
+
+    # If a in absolute value > min(part_B[i+1]), place the barred elements before.
+    for i in range(len(part_B) - 1):
+        block_inf = [e for e in part_B[i] if abs(e) < part_B[i+1][0]]
+        block_sup_neg = [e for e in part_B[i] if (abs(e) > part_B[i+1][0]) * (e < 0)]
+        block_sup_pos = [e for e in part_B[i] if (abs(e) > part_B[i+1][0]) * (e > 0)]
+        part_B[i] = block_inf + block_sup_neg + block_sup_pos
+
+    # Copie profonde
+    part = [block[:] for block in part_B]
+
+    # 1)
+    # Remplacer 1 par 1 1
+    part[0] = [1] + part[0]
+
+    # 2)
+    # If a is in the i-th block with a < m_{i+1}, i < k, or in the last block, and it is barred, then insert it between the 1’s.
+    for i in range(len(part_B) - 1):
+        for j in range(len(part_B[i])):
+            if part_B[i][j] < 0 and abs(part_B[i][j]) < part_B[i+1][0]:
+                index = max(i for i, x in enumerate(part[0]) if x == 1)
+                part[i].remove(part_B[i][j])
+                part[0].insert(index, part_B[i][j])
+    # In the last block, insert the barred elements between the 1s.
+    for j in range(len(part_B[-1])):
+        if part_B[-1][j] < 0:
+            index = max(i for i, x in enumerate(part[0]) if x == 1)
+            part[-1].remove(part_B[-1][j])
+            part[0].insert(index, part_B[-1][j])
+
+    # 3)
+    # For each i >= 1, insert m_{i+1} in the i-th block after the barred elements.
+    for i in range(len(part) - 1):
+        if i == 0:
+            if any(x < 0 for x in part[i]):
+                ind_second_one = max(i for i, x in enumerate(part[i]) if x == 1)
+                ind_last_barred = max(i for i, x in enumerate(part[i]) if x < 0)
+                if ind_last_barred > ind_second_one:
+                    part[i].insert(ind_last_barred + 1, part[i+1][0])
+                else:
+                    part[i].append(part[i+1][0])
+            else:
+                part[i].append(part[i+1][0])
+        else:
+            if any(x < 0 for x in part[i]):
+                ind_last_barred = max(i for i, x in enumerate(part[i]) if x < 0)
+                part[i].insert(ind_last_barred + 1, part[i+1][0])
+            else:
+                part[i].append(part[i+1][0])
+
+    # 4)
+    # Replace each element a different from the minimum with aa.
+    # 5)
+    # Remove the bars and the separators.
+    perm = []
+    for i in range(len(part)):
+        min_current = part[i][0]
+        if i < len(part) - 1:
+            min_next = part[i+1][0]
+        else:
+            min_next = float('inf')
+        for j in range(len(part[i])):
+            if part[i][j] != min_current and part[i][j] != min_next:
+                perm.append(part[i][j])
+                perm.append(part[i][j])
+            else:
+                perm.append(part[i][j])
+    perm = [abs(x) for x in perm]
+
+    return perm
