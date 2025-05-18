@@ -289,3 +289,200 @@ def partitionne_stirling_dyn(lst, k, memo=None):
     
     return lst_part
 
+def partitionne_bell(lst):
+    """
+    Retourne la liste de toutes les partitions des éléments de lst en s"inspirant
+    de la définition du nombre de Bell comme une somme de nombres de Stirling de
+    seconde espèce.
+    """
+    n = len(lst)
+    all_part = []
+    for k in range(n+1):
+        all_part = all_part + partitionne_stirling_dyn(lst, k)
+    return all_part
+
+
+# ========== Statistiques sur les permutations de type A ==========
+
+def liste_desc(perm):
+    """
+    Retourne les indices i tels que σ(i) > σ(i+1).
+    """
+    n = len(perm)
+    lst = [i for i in range(n-1) if perm[i] > perm[i+1]]
+    return lst
+
+
+def liste_asc(perm):
+    """
+    Retourne les indices i tels que σ(i) < σ(i+1).
+    """
+    n = len(perm)
+    lst = [i for i in range(n-1) if perm[i] < perm[i+1]]
+    return lst
+
+
+def liste_exce(perm):
+    """
+    Retourne les indices i tels que σ(i) > i.
+    """
+    n = len(perm)
+    lst = [i for i in range(n-1) if perm[i] > i]
+    return lst
+
+
+def liste_inv(perm):
+    """
+    Retourne les paires (i, j) avec i < j et σ(i) > σ(j).
+    """
+    n = len(perm)
+    lst = [(i, j) for i in range(n) for j in range(i+1, n) if perm[i] > perm[j]]
+    return lst
+
+
+# ========== Partitions de type B ==========
+
+# Une partition de type B est une partition d'un ensemble ⟨n⟩ qui respecte les propriétés suivantes :
+# 1. Pour tout i ≥ 1, les blocs π2i et π2i−1 sont opposés, c'est-à-dire que π2i = −π2i−1,
+#    où −β représente l'ensemble des opposés des éléments de β (−β = {−a : a ∈ β}).
+# 2. Il existe un bloc spécial appelé le bloc zéro (π0), qui est symétrique, c'est-à-dire que si a ∈ π0,
+#    alors −a ∈ π0 également.
+#
+# Représentation d'Adler :
+# - Dans le bloc zéro, tous les éléments négatifs sont supprimés.
+# - Dans chaque bloc, les éléments sont triés par valeur absolue croissante.
+# - Pour chaque paire de blocs opposés, seul le bloc avec le premier élément positif est conservé.
+
+# Stratégie pour générer une partition de type B d'un ensemble de taille et divisée en k blocs :
+# 1.1. Récupérer une partition de type A d'un ensemble de taille n divisée en k blocs (liste de k sous-listes).
+# 1.2. Trier tous les éléments de chaque sous-liste par valeur croissante.
+# 1.3. Trier les sous-listes par valeur croissante de leur premier élément.
+# 1.4. Récupérer la liste des indices des éléments qui ne sont pas les premiers de leur bloc et pas dans le bloc zéro.
+# 2. Générer toutes les combinaisons des indices de la liste obtenue à l'étape 1.4. de longueur 0 à la longueur de la liste.
+# 3. Pour chaque combinaison d'indices, créer une nouvelle partition de type B en inversant le signe aux indices de la combinaison.
+
+
+def print_partitions(parts, length=-1, name="partitions", scope=5):
+    """
+    Affiche les partitions de manière lisible.
+    """
+    if len(parts) > 2 * scope:
+        for i in range(scope):
+            print(parts[i])
+        print("...")
+        for i in range(-scope, 0):
+            print(parts[i])
+    else:
+        for i in range(len(parts)):
+            print(parts[i])
+    print(f"Nombre de {name} pour n={length} : {len(parts)}")
+
+
+def sort_partitions(partitions):
+    """
+    Trie les partitions de type B (ou A) selon la représentation d'Adler.
+    """
+    sorted_partitions = []
+    for part in partitions:
+        # Trier les blocs par valeur croissante de leur premier élément
+        part.sort(key=lambda x: x[0])
+        # Trier les éléments de chaque bloc par valeur absolue croissante
+        for bloc in part:
+            bloc.sort(key=lambda x: abs(x))
+        sorted_partitions.append(part)
+    return sorted_partitions
+
+
+def get_signable_inds(part):
+    """
+    Récupère la liste des indices des éléments qui ne sont pas les premiers de leur bloc et pas dans le bloc zéro.
+    """
+    liste_signable_inds = []
+    ind = 0
+    for i in range(len(part)):
+        for j in range(0, len(part[i])):
+            if part[i][0] != 0 and part[i][j] != part[i][0]:
+                liste_signable_inds.append(ind)
+            ind += 1
+    return liste_signable_inds
+
+
+def convert_part_A_to_B(part_A, permu_signed_inds):
+    """
+    Convertit une partition de type A en une partition de type B en inversant le signe
+    aux indices spécifiés par permu_signed_inds.
+    """
+    ind = 0
+    part_B = []
+    for i in range(len(part_A)):
+        bloc = []
+        for j in range(0, len(part_A[i])):
+            if ind in permu_signed_inds:
+                bloc.append(-part_A[i][j])
+            else:
+                bloc.append(part_A[i][j])
+            ind += 1
+        part_B.append(bloc)
+    return part_B
+
+
+def get_all_parts_B_from_A(parts_A, complete = False):
+    """
+    Récupère toutes les partitions de type B à partir d'une liste de partitions de type A.
+    """
+    all_part_B = []
+    for part_A in parts_A:
+        # Trier la partition de type A selon la représentation d'Adler
+        #part_A = sort_partitions([part_A])[0]
+        # Récupérer la liste des indices signables
+        liste_signable_inds = get_signable_inds(part_A)
+        # Générer toutes les combinaisons d'indices signables
+        combinaisons = combine_dyn(liste_signable_inds)
+        for comb in combinaisons:
+            # Convertir la partition de type A en type B
+            part_B = convert_part_A_to_B(part_A, comb)
+            all_part_B.append(part_B)
+
+    if complete:
+        all_part_B = complete_parts_B(all_part_B)
+
+    return all_part_B
+
+def complete_parts_B(parts_B):
+    """
+    Complète les partitions de type B en ajoutant après charque bloc son bloc opposé.
+    """
+    all_part_B = []
+    for part_B in parts_B:
+        new_part = []
+        for bloc in part_B:
+            new_part.append([-x for x in bloc])
+            new_part.append(bloc)
+        all_part_B.append(new_part)
+    return all_part_B
+
+def calcule_dowling(n):
+    """
+    Fonction pour calculer le nombre de partitions de type B selon la formule du nombre de Dowling
+    """
+    dn = 0
+    for i in range(n+1):
+        # coeff binomial C(n, i)
+        c = coeff_bino_dyn(n, i)
+        # somme sur k
+        s = 0
+        for k in range(n - i + 1):
+            s += (2**(n - i - k)) * calcule_stirling_dyn(n - i, k)
+        dn += c * s
+    return dn
+
+
+def calcule_dowling_no_zero_block(n):
+    """
+    Fonction pour calculer le nombre de partitions de type B sans bloc zéro selon la formule du nombre de Dowling
+    """
+    wn = 0
+    for k in range(0, n+1):
+        wn += (2**(n - k)) * calcule_stirling_dyn(n, k)
+    return wn
+
