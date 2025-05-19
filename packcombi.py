@@ -460,8 +460,11 @@ def complete_parts_B(parts_B):
     for part_B in parts_B:
         new_part = []
         for bloc in part_B:
-            new_part.append([-x for x in bloc])
-            new_part.append(bloc)
+            if 0 not in bloc:
+                new_part.append([-x for x in bloc])
+                new_part.append(bloc)
+            else:
+                new_part.append(bloc + [-x for x in bloc if x != 0])
         all_part_B.append(new_part)
     return all_part_B
 
@@ -526,7 +529,7 @@ def is_merge_free(part):
     """
     for i in range(1, len(part)):
         # Vérifier si le maximum du bloc i-1 est inférieur au minimum du bloc i en valeur absolue
-        if abs(part[i-1][-1]) < abs(part[i][0]):
+        if max(abs(np.array(part[i-1]))) < min(abs(np.array(part[i]))):
             return False
     return True
 
@@ -637,33 +640,6 @@ def plot_partition(partition, figsize=(10, 2), arc_height_scale=1.0):
     plt.tight_layout()
     plt.show()
 
-def is_non_nesting(part, n):
-    """
-    Vérifie si une partition de type B est non-nesting.
-    """
-    k = len(part)
-
-    # On remplace les éléments négatifs par leur valeur absolue + n
-    for i in range(len(part)):
-        for j in range(len(part[i])):
-            if part[i][j] < 0:
-                part[i][j] = abs(part[i][j]) + n
-
-    # On parcourt toutes les paires de blocs
-    for i in range(k-1):
-        for j in range(i + 1, k):
-            min_i = min(part[i])
-            max_i = max(part[i])
-            min_j = min(part[j])
-            max_j = max(part[j])
-            # Vérifier si il y a une inclusion ou disjonction
-            if (min_i < min_j and max_j < max_i) or \
-               (min_j < min_i and max_i < max_j):
-                #print(part, ": False")
-                return False
-    #print(part, ": True")
-
-    return True
 
 # ========== Stirling Permutations ==========
 
@@ -765,22 +741,13 @@ def get_flattened_stirling_permutations(part_B):
     # 3)
     # For each i >= 1, insert m_{i+1} in the i-th block after the barred elements.
     for i in range(len(part) - 1):
-        if i == 0:
-            if any(x < 0 for x in part[i]):
-                ind_second_one = max(i for i, x in enumerate(part[i]) if x == 1)
-                ind_last_barred = max(i for i, x in enumerate(part[i]) if x < 0)
-                if ind_last_barred > ind_second_one:
-                    part[i].insert(ind_last_barred + 1, part[i+1][0])
-                else:
-                    part[i].append(part[i+1][0])
-            else:
-                part[i].append(part[i+1][0])
+        min_next = part[i+1][0]
+        if any(x < 0 and abs(x) > min_next for x in part[i]):
+            ind_last_barred = max(i for i, x in enumerate(part[i]) if x < 0)
+            part[i].insert(ind_last_barred + 1, min_next)
         else:
-            if any(x < 0 for x in part[i]):
-                ind_last_barred = max(i for i, x in enumerate(part[i]) if x < 0)
-                part[i].insert(ind_last_barred + 1, part[i+1][0])
-            else:
-                part[i].append(part[i+1][0])
+            ind = max(i for i, x in enumerate(part[i]) if abs(x) < min_next)
+            part[i].insert(ind + 1, min_next)
 
     # 4)
     # Replace each element a different from the minimum with aa.
