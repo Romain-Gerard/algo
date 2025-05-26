@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import Arc
 import numpy as np
+import pandas as pd
 
 # ========== Factorielle et coefficient binomial ==========
 
@@ -769,3 +770,70 @@ def get_flattened_stirling_permutations(part_B):
     perm = [abs(x) for x in perm]
 
     return perm
+
+
+def is_flattened_stirling_tree_old(tree):
+    """
+    Vérifie si un arbre respectes la définition de flattened.
+    """
+    tree_array = np.array(tree)
+    parents = tree_array[:, 0]
+    children = tree_array[:, 1]
+    low_leaves = children[np.where(parents == 0)]
+    high_leaves = children[np.where(parents != 0)]
+    nodes = pd.unique(parents[parents != 0])
+
+
+    # Une feuille est toujours supérieur à son noeud parent
+    if np.any(children <= parents):
+        return False
+
+    # La hauteur maximale est de 2
+    # i.e. un enfant de parent non nul ne peux pas être parent
+    if np.any(np.isin(high_leaves, parents)):
+        return False
+    
+    # Si i et j deux feuilles avec le même noeud parent non nul
+    # et j à droite de i, alors il faut que i < j.
+    for node in nodes:
+        children_node = children[np.where(parents == node)]
+        if len(children_node) > 1:
+            for i in range(len(children_node) - 1):
+                if children_node[i] > children_node[i + 1]:
+                    return False
+    
+    # Si x et y deux noeuds non nuls
+    # tels que x est le noeuds le plus proche à gauche de y,
+    # alors il faut que x < y.
+    for i in range(0, len(nodes) - 1):
+        if nodes[i] > nodes[i + 1]:
+            return False
+
+
+    # Si l'arbre commence à gauche par une feuille basse,
+    # alors elle est la dernière descente.
+    if parents[0] == 0:
+        last_descent = children[0]
+    else:
+        last_descent = 0
+
+    for i in range(1, len(parents)):
+        # Si une feuille basse a un noeud immédiatement à sa gauche,
+        # alors elle droit être supérieure à ce noeud, et le noeud devient la dernière descente.
+        if children[i] in low_leaves and parents[i-1] in nodes:
+            if children[i] < parents[i-1]:
+                return False
+            else:
+                last_descent = parents[i-1]
+
+        # Si une feuille basse à une feuille basse à sa gauche,
+        # et si elle est inférieure à cette feuille,
+        # alors elle doit être supérieure à la dernière descente.
+        if children[i] in low_leaves and children[i-1] in low_leaves:
+            if children[i] < children[i-1]:
+                if children[i] > last_descent:
+                    last_descent = children[i]
+                else:
+                    return False
+
+    return True
