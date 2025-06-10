@@ -26,13 +26,22 @@ Trouver des formules pour compter des objets
 **Combinatoire bijective**
 Lorsque l'on constate que deux ensembles ont le même cardinal, alors on tente d'établir une bijection entre ces ensembles. Rappel de définition d'une bijection et de pourquoi le fait de trouver une procédure permet d'établir une bijection.
 Trouver une exemple (non trivial ?).
+
 ## Partitions
 **Partitions de type A**
+Définition. Nombre de Stirling de seconde espèce. Nombre de Bell.
+Statistiques : descentes, inversions, successions.
+Ensembles : merge-free, run sorted, non-crossing, non-nesting.
 
 **Partitions de type B**
+Idem.
 
 ## Méthodologie
 # Résultats et discussion
+
+
+
+## Discussion
 
 
 # Conclusion
