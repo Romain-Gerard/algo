@@ -28,6 +28,7 @@ Lorsque l'on constate que deux ensembles ont le même cardinal, alors on tente d
 Trouver une exemple (non trivial ?).
 ## Partitions
 **Partitions de type A**
+
 **Partitions de type B**
 
 ## Méthodologie
