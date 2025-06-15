@@ -15,11 +15,11 @@ Let $\pi = \pi_1 | \pi_2 | \cdots | \pi_k \in \Pi^0_n$. We apply the following p
 
 **Example 1.** 
 
-Let $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10 \ \in \Pi^0_{10}$. 
+Let $\pi = 1\ 4|2\ 6\ \overline{7}|3\ 8\ 10 \ \in \Pi^0_{10}$. 
 
 Then, we add a zero block. 
 
-$0\ 1\ 4|2\ 6\ \overline{7}|3\ 8\ 9\ 10$
+$0\ 1\ 4|2\ 6\ \overline{7}|3\ 8\ 10$
 
 Since $\overline{7}$ and $9$ are successions, we move them to the zero block.
 
