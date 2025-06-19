@@ -1,51 +1,90 @@
-# Remerciements
+0. Introduction : Contexte & Objectif (1 min)
 
+Objectif du stage : explorer des familles combinatoires (partitions de type B, FSPs) à travers une démarche expérimentale puis théorique.
 
-# Introduction
--  **Contexte de l'étude et objectif (stage)**
-	- Stage de 3 mois en M1 Biologie Informatique au sein de l'IRIF
-	- Objectif : Comprendre, mettre en œuvre une méthodologie et développer des outils pour répondre à une question scientifique
-- **Présentation succincte du cadre et des questions**
-	- Présenter les mathématiques combinatoires
-	- Définir sans expliquer les partitions de type A et de type B
-	- Citer des statistiques que l'on peut étudier sur ces partitions (+ les nombres associés)
-	- Enoncer les questions (strongly separated, FSP et trees)
-- **Exposition du plan du rapport**
-	- Dans "Matériel et méthodes", explication des concepts de bases de la combinatoire
-		puis présentation de la méthodologie de travail adoptée.
-	- Dans "Résultats et Discussion", présentation des découvertes, conjectures, preuves et des questions ouvertes.
-# Matériel et méthodes
-## Concepts de bases
-Paragraphe introductif qui définie la combinatoire en générale. (ne pas encore parler de partitions, juste de permutations et de combinaisons).
-
-**Combinatoire énumérative**
-Trouver des formules pour compter des objets 
-- Soit des formules closes (exp : Coefficient binomial)
-- Soit des formules récursives (exp : Relation de Pascal)
-
-**Combinatoire bijective**
-Lorsque l'on constate que deux ensembles ont le même cardinal, alors on tente d'établir une bijection entre ces ensembles. Rappel de définition d'une bijection et de pourquoi le fait de trouver une procédure permet d'établir une bijection.
-Trouver une exemple (non trivial ?).
-
-## Partitions
-**Partitions de type A**
-Définition. Nombre de Stirling de seconde espèce. Nombre de Bell.
-Statistiques : descentes, inversions, successions.
-Ensembles : merge-free, run sorted, non-crossing, non-nesting.
-
-**Partitions de type B**
-Idem.
-
-## Méthodologie
-# Résultats et discussion
+Question centrale : Comment passer de données brutes (listes, filtres) à des énoncés généraux rigoureux ?
 
 
 
-## Discussion
+---
+
+1. Deux approches de la combinatoire (2 min)
+
+Combinatoire énumérative :
+
+But : compter.
+
+Moyens : formules fermées, récurrences, génératrices.
 
 
-# Conclusion
+Combinatoire bijective :
+
+But : expliquer.
+
+Moyens : bijections entre familles, préservation des statistiques.
 
 
-# Résumé
+Complémentarité :
 
+L’énumératif suggère.
+
+Le bijectif justifie.
+
+Exemple : coïncidence entre deux séquences → hypothèse de bijection.
+
+
+
+
+---
+
+2. Une méthode en trois étapes (4 min)
+
+a) Exploration expérimentale
+
+Génération de familles : partitions type B, permutations, arbres…
+
+Filtres successifs (merge-free, separated, strongly separated…).
+
+Utilisation de l’OEIS pour détecter des suites connues.
+
+
+b) Conjecture à partir des données
+
+Observation : certaines sous-familles ont une cardinalité connue.
+
+Exemple : strongly separated partitions $\leftrightarrow$ partitions type B sans zero block.
+
+Bijection construite après coup.
+
+
+c) Confirmation théorique
+
+Traduction structurelle : arbres ↔ permutations.
+
+Formules récursives à plusieurs paramètres.
+
+Fonction génératrice, équation différentielle.
+
+
+
+---
+
+3. Cas d’étude : FSPs (2 min)
+
+Origine : Nabawanda et Buck.
+
+Analyse par arbres restreints.
+
+Formule récursive et EGF.
+
+
+
+---
+
+4. Conclusion & ouverture (1 min)
+
+Une méthode productive : expérimenter → conjecturer → prouver.
+
+Persistance de questions ouvertes (formule fermée ? bijections supplémentaires ?).
+
+Importance des outils informatiques pour guider la recherche.
